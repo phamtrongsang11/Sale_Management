@@ -4,6 +4,16 @@
  */
 package GUI;
 
+import BLL.OrderBLL;
+import DAL.Order;
+import DAL.OrderDetail;
+import java.util.ArrayList;
+import java.util.Vector;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
+
 /**
  *
  * @author phamt
@@ -13,8 +23,23 @@ public class OrderGUI extends javax.swing.JFrame {
     /**
      * Creates new form OrderGUI
      */
+    private OrderBLL orderBLL = new OrderBLL();
+    private ArrayList<Order> orderList = new ArrayList<>();
+
+    private DefaultTableModel modelOrder = new DefaultTableModel();
+    private DefaultTableModel modelDetail = new DefaultTableModel();
+    private int[] headerOrder = {50, 150, 150, 150, 100, 100, 100};
+    private int[] headerDetail = {100, 100, 200, 150, 150, 150};
+
+    private String[] headerTitleOrder = {"ID", "Customer", "Date ", "Address", "City", "TotalQty", "TotalPrice"};
+    private String[] headerTitleDetail = {"OrderID", "ProdID", "Name", "Qty", "Price", "Subtotal"};
+
     public OrderGUI() {
         initComponents();
+        loadAllOrders();
+        this.pack();
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
     }
 
     /**
@@ -26,29 +51,39 @@ public class OrderGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        dateChooser1 = new com.raven.datechooser.DateChooser();
+        dateChooser2 = new com.raven.datechooser.DateChooser();
         jPanel5 = new javax.swing.JPanel();
         jPanel15 = new javax.swing.JPanel();
         jPanel12 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        txtFrom = new javax.swing.JTextField();
+        btnDateFrom = new javax.swing.JButton();
         jPanel16 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        jTextField7 = new javax.swing.JTextField();
-        jButton8 = new javax.swing.JButton();
+        txtTo = new javax.swing.JTextField();
+        btnDateTo = new javax.swing.JButton();
+        txtAdvance = new javax.swing.JButton();
         jPanel23 = new javax.swing.JPanel();
         btnAddOrder = new javax.swing.JButton();
-        BtnDeleteOrder = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        btnEdit = new javax.swing.JButton();
+        btnDeleteOrder = new javax.swing.JButton();
+        btnReload = new javax.swing.JButton();
         jPanel26 = new javax.swing.JPanel();
-        txtSearch1 = new javax.swing.JTextField();
-        jButton9 = new javax.swing.JButton();
+        txtUser = new javax.swing.JTextField();
+        btnSearch = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        tableProduct = new javax.swing.JTable();
+        tableOrder = new javax.swing.JTable();
         jPanel25 = new javax.swing.JPanel();
-        txtSearch = new javax.swing.JTextField();
-        jButton7 = new javax.swing.JButton();
+        txtProduct = new javax.swing.JTextField();
+        btnSearchDetail = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
-        tableProduct1 = new javax.swing.JTable();
+        tableDetail = new javax.swing.JTable();
+
+        dateChooser1.setTextRefernce(txtFrom);
+
+        dateChooser2.setForeground(new java.awt.Color(102, 102, 255));
+        dateChooser2.setTextRefernce(txtTo);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -64,28 +99,22 @@ public class OrderGUI extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Date From");
+        jPanel12.add(jLabel3);
 
-        jTextField4.setPreferredSize(new java.awt.Dimension(180, 25));
+        txtFrom.setPreferredSize(new java.awt.Dimension(180, 25));
+        jPanel12.add(txtFrom);
 
-        javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
-        jPanel12.setLayout(jPanel12Layout);
-        jPanel12Layout.setHorizontalGroup(
-            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel12Layout.createSequentialGroup()
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField4, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
-                .addGap(12, 12, 12))
-        );
-        jPanel12Layout.setVerticalGroup(
-            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel12Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
-        );
+        btnDateFrom.setBackground(new java.awt.Color(98, 110, 212));
+        btnDateFrom.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        btnDateFrom.setForeground(new java.awt.Color(255, 255, 255));
+        btnDateFrom.setText("Date");
+        btnDateFrom.setPreferredSize(new java.awt.Dimension(60, 25));
+        btnDateFrom.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDateFromActionPerformed(evt);
+            }
+        });
+        jPanel12.add(btnDateFrom);
 
         jPanel15.add(jPanel12);
 
@@ -94,37 +123,31 @@ public class OrderGUI extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Date To");
+        jPanel16.add(jLabel4);
 
-        jTextField7.setPreferredSize(new java.awt.Dimension(180, 25));
+        txtTo.setPreferredSize(new java.awt.Dimension(180, 25));
+        jPanel16.add(txtTo);
 
-        javax.swing.GroupLayout jPanel16Layout = new javax.swing.GroupLayout(jPanel16);
-        jPanel16.setLayout(jPanel16Layout);
-        jPanel16Layout.setHorizontalGroup(
-            jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel16Layout.createSequentialGroup()
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField7, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
-                .addGap(12, 12, 12))
-        );
-        jPanel16Layout.setVerticalGroup(
-            jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel16Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
-        );
+        btnDateTo.setBackground(new java.awt.Color(98, 110, 212));
+        btnDateTo.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        btnDateTo.setForeground(new java.awt.Color(255, 255, 255));
+        btnDateTo.setText("Date");
+        btnDateTo.setPreferredSize(new java.awt.Dimension(60, 25));
+        btnDateTo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDateToActionPerformed(evt);
+            }
+        });
+        jPanel16.add(btnDateTo);
 
         jPanel15.add(jPanel16);
 
-        jButton8.setBackground(new java.awt.Color(98, 110, 212));
-        jButton8.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        jButton8.setForeground(new java.awt.Color(255, 255, 255));
-        jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/search.png"))); // NOI18N
-        jButton8.setPreferredSize(new java.awt.Dimension(60, 25));
-        jPanel15.add(jButton8);
+        txtAdvance.setBackground(new java.awt.Color(98, 110, 212));
+        txtAdvance.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        txtAdvance.setForeground(new java.awt.Color(255, 255, 255));
+        txtAdvance.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/search.png"))); // NOI18N
+        txtAdvance.setPreferredSize(new java.awt.Dimension(60, 25));
+        jPanel15.add(txtAdvance);
 
         jPanel5.add(jPanel15);
 
@@ -139,44 +162,77 @@ public class OrderGUI extends javax.swing.JFrame {
         btnAddOrder.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/add.png"))); // NOI18N
         btnAddOrder.setText("Add");
         btnAddOrder.setPreferredSize(new java.awt.Dimension(100, 30));
+        btnAddOrder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddOrderActionPerformed(evt);
+            }
+        });
         jPanel23.add(btnAddOrder);
 
-        BtnDeleteOrder.setBackground(new java.awt.Color(98, 110, 212));
-        BtnDeleteOrder.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        BtnDeleteOrder.setForeground(new java.awt.Color(255, 255, 255));
-        BtnDeleteOrder.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/delete.png"))); // NOI18N
-        BtnDeleteOrder.setText("Delete");
-        BtnDeleteOrder.setPreferredSize(new java.awt.Dimension(100, 30));
-        jPanel23.add(BtnDeleteOrder);
+        btnEdit.setBackground(new java.awt.Color(98, 110, 212));
+        btnEdit.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        btnEdit.setForeground(new java.awt.Color(255, 255, 255));
+        btnEdit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/edit.png"))); // NOI18N
+        btnEdit.setText("Edit");
+        btnEdit.setPreferredSize(new java.awt.Dimension(100, 30));
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
+            }
+        });
+        jPanel23.add(btnEdit);
 
-        jButton5.setBackground(new java.awt.Color(98, 110, 212));
-        jButton5.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        jButton5.setForeground(new java.awt.Color(255, 255, 255));
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/refresh.png"))); // NOI18N
-        jButton5.setText("Reload");
-        jButton5.setPreferredSize(new java.awt.Dimension(100, 30));
-        jPanel23.add(jButton5);
+        btnDeleteOrder.setBackground(new java.awt.Color(98, 110, 212));
+        btnDeleteOrder.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        btnDeleteOrder.setForeground(new java.awt.Color(255, 255, 255));
+        btnDeleteOrder.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/delete.png"))); // NOI18N
+        btnDeleteOrder.setText("Delete");
+        btnDeleteOrder.setPreferredSize(new java.awt.Dimension(100, 30));
+        btnDeleteOrder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteOrderActionPerformed(evt);
+            }
+        });
+        jPanel23.add(btnDeleteOrder);
+
+        btnReload.setBackground(new java.awt.Color(98, 110, 212));
+        btnReload.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        btnReload.setForeground(new java.awt.Color(255, 255, 255));
+        btnReload.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/refresh.png"))); // NOI18N
+        btnReload.setText("Reload");
+        btnReload.setPreferredSize(new java.awt.Dimension(100, 30));
+        btnReload.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReloadActionPerformed(evt);
+            }
+        });
+        jPanel23.add(btnReload);
 
         jPanel5.add(jPanel23);
 
         jPanel26.setBackground(new java.awt.Color(34, 39, 54));
         jPanel26.setPreferredSize(new java.awt.Dimension(268, 50));
 
-        txtSearch1.setPreferredSize(new java.awt.Dimension(180, 25));
-        jPanel26.add(txtSearch1);
+        txtUser.setPreferredSize(new java.awt.Dimension(180, 25));
+        jPanel26.add(txtUser);
 
-        jButton9.setBackground(new java.awt.Color(98, 110, 212));
-        jButton9.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        jButton9.setForeground(new java.awt.Color(255, 255, 255));
-        jButton9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/search.png"))); // NOI18N
-        jButton9.setPreferredSize(new java.awt.Dimension(60, 25));
-        jPanel26.add(jButton9);
+        btnSearch.setBackground(new java.awt.Color(98, 110, 212));
+        btnSearch.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        btnSearch.setForeground(new java.awt.Color(255, 255, 255));
+        btnSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/search.png"))); // NOI18N
+        btnSearch.setPreferredSize(new java.awt.Dimension(60, 25));
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
+        jPanel26.add(btnSearch);
 
         jPanel5.add(jPanel26);
 
         jScrollPane2.setPreferredSize(new java.awt.Dimension(452, 500));
 
-        tableProduct.setModel(new javax.swing.table.DefaultTableModel(
+        tableOrder.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null},
@@ -184,7 +240,7 @@ public class OrderGUI extends javax.swing.JFrame {
                 {null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Customer", "Employee", "Address", "City", "TotalQty", "TotalPrice"
+                "ID", "Customer", "Date", "Address", "City", "TotalQty", "TotalPrice"
             }
         ) {
             Class[] types = new Class [] {
@@ -195,59 +251,74 @@ public class OrderGUI extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
-        tableProduct.setFillsViewportHeight(true);
-        tableProduct.setGridColor(new java.awt.Color(0, 117, 217));
-        tableProduct.setRowHeight(30);
-        tableProduct.setSelectionBackground(new java.awt.Color(0, 117, 217));
-        tableProduct.setSelectionForeground(new java.awt.Color(255, 255, 255));
-        tableProduct.setShowGrid(true);
-        jScrollPane2.setViewportView(tableProduct);
+        tableOrder.setFillsViewportHeight(true);
+        tableOrder.setGridColor(new java.awt.Color(0, 117, 217));
+        tableOrder.setRowHeight(30);
+        tableOrder.setSelectionBackground(new java.awt.Color(0, 117, 217));
+        tableOrder.setSelectionForeground(new java.awt.Color(255, 255, 255));
+        tableOrder.setShowGrid(true);
+        tableOrder.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableOrderMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tableOrder);
 
         jPanel5.add(jScrollPane2);
 
         jPanel25.setBackground(new java.awt.Color(34, 39, 54));
         jPanel25.setPreferredSize(new java.awt.Dimension(268, 50));
 
-        txtSearch.setPreferredSize(new java.awt.Dimension(180, 25));
-        jPanel25.add(txtSearch);
+        txtProduct.setPreferredSize(new java.awt.Dimension(180, 25));
+        jPanel25.add(txtProduct);
 
-        jButton7.setBackground(new java.awt.Color(98, 110, 212));
-        jButton7.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        jButton7.setForeground(new java.awt.Color(255, 255, 255));
-        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/search.png"))); // NOI18N
-        jButton7.setPreferredSize(new java.awt.Dimension(60, 25));
-        jPanel25.add(jButton7);
+        btnSearchDetail.setBackground(new java.awt.Color(98, 110, 212));
+        btnSearchDetail.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        btnSearchDetail.setForeground(new java.awt.Color(255, 255, 255));
+        btnSearchDetail.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/search.png"))); // NOI18N
+        btnSearchDetail.setPreferredSize(new java.awt.Dimension(60, 25));
+        btnSearchDetail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchDetailActionPerformed(evt);
+            }
+        });
+        jPanel25.add(btnSearchDetail);
 
         jPanel5.add(jPanel25);
 
         jScrollPane3.setPreferredSize(new java.awt.Dimension(452, 500));
 
-        tableProduct1.setModel(new javax.swing.table.DefaultTableModel(
+        tableDetail.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Order ID", "Product ID", "Quantity", "Price", "Subtotal"
+                "Order ID", "Product ID", "Name", "Quantity", "Price", "Subtotal"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Double.class, java.lang.Double.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Double.class, java.lang.Double.class
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
         });
-        tableProduct1.setFillsViewportHeight(true);
-        tableProduct1.setGridColor(new java.awt.Color(0, 117, 217));
-        tableProduct1.setRowHeight(30);
-        tableProduct1.setSelectionBackground(new java.awt.Color(0, 117, 217));
-        tableProduct1.setSelectionForeground(new java.awt.Color(255, 255, 255));
-        tableProduct1.setShowGrid(true);
-        jScrollPane3.setViewportView(tableProduct1);
+        tableDetail.setFillsViewportHeight(true);
+        tableDetail.setGridColor(new java.awt.Color(0, 117, 217));
+        tableDetail.setRowHeight(30);
+        tableDetail.setSelectionBackground(new java.awt.Color(0, 117, 217));
+        tableDetail.setSelectionForeground(new java.awt.Color(255, 255, 255));
+        tableDetail.setShowGrid(true);
+        tableDetail.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableDetailMouseClicked(evt);
+            }
+        });
+        jScrollPane3.setViewportView(tableDetail);
 
         jPanel5.add(jScrollPane3);
 
@@ -266,6 +337,175 @@ public class OrderGUI extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void tableOrderMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableOrderMouseClicked
+        int i = tableOrder.getSelectedRow();
+        if (i != -1) {
+            int id = Integer.parseInt(tableOrder.getModel().getValueAt(i, 0).toString());
+
+            Order order = orderBLL.getOrderById(id);
+            setDetailToTable(new ArrayList(order.getOrderDetails()));
+
+        }
+    }//GEN-LAST:event_tableOrderMouseClicked
+
+    private void tableDetailMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableDetailMouseClicked
+
+    }//GEN-LAST:event_tableDetailMouseClicked
+
+    private void btnDateFromActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDateFromActionPerformed
+        dateChooser1.setVisible(true);
+
+//        dateChooser1.showPopup(parent, 500, 300);
+        dateChooser1.showPopup(this, 200,200);
+    }//GEN-LAST:event_btnDateFromActionPerformed
+
+    private void btnReloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReloadActionPerformed
+        loadAllOrders();
+    }//GEN-LAST:event_btnReloadActionPerformed
+
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        if (!txtUser.getText().trim().isEmpty()) {
+            orderList = orderBLL.findOrderByUserName(txtUser.getText());
+            setOrderToTable();
+        } else {
+            JOptionPane.showMessageDialog(this, "Please enter your key search first");
+        }
+    }//GEN-LAST:event_btnSearchActionPerformed
+
+    private void btnSearchDetailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchDetailActionPerformed
+        int i = tableOrder.getSelectedRow();
+        if (i != -1)
+            if (!txtProduct.getText().trim().isEmpty()) {
+
+                ArrayList<OrderDetail> odList = orderBLL.findOrderDetailByProductName(orderList.get(i), txtProduct.getText());
+
+                this.setDetailToTable(odList);
+            } else {
+                JOptionPane.showMessageDialog(this, "Please enter your key search first");
+            }
+        else {
+            JOptionPane.showMessageDialog(this, "Please choose record order first");
+        }
+    }//GEN-LAST:event_btnSearchDetailActionPerformed
+
+    private void btnDateToActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDateToActionPerformed
+        dateChooser2.setVisible(true);
+
+//        dateChooser1.showPopup(parent, 500, 300);
+        dateChooser2.showPopup(this, 200, 200);
+    }//GEN-LAST:event_btnDateToActionPerformed
+
+    private void btnAddOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddOrderActionPerformed
+        AddOrderGUI addGUI = new AddOrderGUI(this);
+    }//GEN-LAST:event_btnAddOrderActionPerformed
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnEditActionPerformed
+
+    private void btnDeleteOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteOrderActionPerformed
+        int i = tableOrder.getSelectedRow();
+        if (i != -1) {
+            int choice = JOptionPane.showConfirmDialog(this, "Are you sure want to delete it", "Confirm Dialog", JOptionPane.YES_NO_OPTION);
+            if (choice == JOptionPane.YES_OPTION) {
+                int id = Integer.parseInt(tableOrder.getModel().getValueAt(i, 0).toString());
+                System.out.println(id);
+                
+                if(orderBLL.deleteOrderByID(i)){
+                    JOptionPane.showMessageDialog(this, "Delete order successfully");
+                    loadAllOrders();
+                    this.setDetailToTable(new ArrayList(new Order().getOrderDetails()));
+                }
+                else{
+                    JOptionPane.showMessageDialog(this,  "Delete order fail");
+                }
+
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Please choose record you want to delete first");
+        }
+    }//GEN-LAST:event_btnDeleteOrderActionPerformed
+
+    public void loadAllOrders() {
+        orderList = orderBLL.getAllOrders();
+        if (orderList != null) {
+            setOrderToTable();
+        } else {
+            JOptionPane.showMessageDialog(this, "Cannot get list order!!!");
+        }
+
+    }
+
+    public void setOrderToTable() {
+
+        modelOrder = this.initTableModel(modelOrder, headerTitleOrder);
+
+        for (Order order : orderList) {
+
+            Vector row = new Vector();
+            row.add(order.getOrderID());
+            row.add(order.getUser().getFirstName() + " " + order.getUser().getLastName());
+            row.add(order.getDate());
+            row.add(order.getAddress());
+            row.add(order.getCity());
+            row.add(order.getTotalQty());
+            row.add(order.getTotalPrice());
+
+            modelOrder.addRow(row);
+
+        }
+        tableOrder.setModel(modelOrder);
+        setColumnWidth(tableOrder, headerOrder);
+
+    }
+
+    public void setDetailToTable(ArrayList<OrderDetail> odList) {
+
+        modelDetail = this.initTableModel(modelDetail, headerTitleDetail);
+
+        for (OrderDetail od : odList) {
+            Vector row = new Vector();
+            row.add(od.getOrder().getOrderID());
+            row.add(od.getProduct().getProductID());
+            row.add(od.getProduct().getName());
+            row.add(od.getQty());
+            row.add(od.getPrice());
+            row.add(od.getSubtotal());
+
+            modelDetail.addRow(row);
+
+        }
+        tableDetail.setModel(modelDetail);
+        setColumnWidth(tableDetail, headerDetail);
+
+    }
+
+    public DefaultTableModel initTableModel(DefaultTableModel model, String[] name) {
+        Vector header = new Vector();
+        for (String s : name) {
+            header.add(s);
+        }
+        model = new DefaultTableModel(header, 0);
+        return model;
+    }
+
+    public ArrayList<Order> getOrderList() {
+        return orderList;
+    }
+
+    public void setColumnWidth(JTable tbl, int[] width) {
+        tbl.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+        TableColumnModel columnModel = tbl.getColumnModel();
+        for (int i = 0; i < width.length; i++) {
+            if (i < columnModel.getColumnCount()) {
+                columnModel.getColumn(i).setMaxWidth(width[i]);
+            } else {
+                break;
+            }
+        }
+
+    }
 
     /**
      * @param args the command line arguments
@@ -303,42 +543,33 @@ public class OrderGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton BtnDeleteOrder;
     private javax.swing.JButton btnAddOrder;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
-    private javax.swing.JButton jButton9;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JButton btnDateFrom;
+    private javax.swing.JButton btnDateTo;
+    private javax.swing.JButton btnDeleteOrder;
+    private javax.swing.JButton btnEdit;
+    private javax.swing.JButton btnReload;
+    private javax.swing.JButton btnSearch;
+    private javax.swing.JButton btnSearchDetail;
+    private com.raven.datechooser.DateChooser dateChooser1;
+    private com.raven.datechooser.DateChooser dateChooser2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel12;
-    private javax.swing.JPanel jPanel13;
-    private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel16;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel23;
     private javax.swing.JPanel jPanel25;
     private javax.swing.JPanel jPanel26;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel8;
-    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTable tableProduct;
-    private javax.swing.JTable tableProduct1;
-    private javax.swing.JTextField txtSearch;
-    private javax.swing.JTextField txtSearch1;
+    private javax.swing.JTable tableDetail;
+    private javax.swing.JTable tableOrder;
+    private javax.swing.JButton txtAdvance;
+    private javax.swing.JTextField txtFrom;
+    private javax.swing.JTextField txtProduct;
+    private javax.swing.JTextField txtTo;
+    private javax.swing.JTextField txtUser;
     // End of variables declaration//GEN-END:variables
 }

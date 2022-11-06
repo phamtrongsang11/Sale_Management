@@ -30,25 +30,26 @@ public class ReceivedGUI extends javax.swing.JFrame {
         jPanel15 = new javax.swing.JPanel();
         jPanel12 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        txtFrom = new javax.swing.JTextField();
         jPanel16 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        jTextField7 = new javax.swing.JTextField();
-        jButton8 = new javax.swing.JButton();
+        txtTo = new javax.swing.JTextField();
+        btnSearchDate = new javax.swing.JButton();
         jPanel23 = new javax.swing.JPanel();
-        btnAddRec = new javax.swing.JButton();
-        BtnDelRec = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        btnAdd = new javax.swing.JButton();
+        btnEdit = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
+        btnReload = new javax.swing.JButton();
         jPanel26 = new javax.swing.JPanel();
         txtSearch1 = new javax.swing.JTextField();
-        jButton9 = new javax.swing.JButton();
+        btnSearch = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        tableProduct = new javax.swing.JTable();
+        tableReceive = new javax.swing.JTable();
         jPanel25 = new javax.swing.JPanel();
         txtSearch = new javax.swing.JTextField();
-        jButton7 = new javax.swing.JButton();
+        btnSearchDetail = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
-        tableProduct1 = new javax.swing.JTable();
+        tableDetail = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -65,7 +66,7 @@ public class ReceivedGUI extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Date From");
 
-        jTextField4.setPreferredSize(new java.awt.Dimension(180, 25));
+        txtFrom.setPreferredSize(new java.awt.Dimension(180, 25));
 
         javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
         jPanel12.setLayout(jPanel12Layout);
@@ -74,7 +75,7 @@ public class ReceivedGUI extends javax.swing.JFrame {
             .addGroup(jPanel12Layout.createSequentialGroup()
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField4, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
+                .addComponent(txtFrom, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
                 .addGap(12, 12, 12))
         );
         jPanel12Layout.setVerticalGroup(
@@ -83,7 +84,7 @@ public class ReceivedGUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtFrom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -95,7 +96,7 @@ public class ReceivedGUI extends javax.swing.JFrame {
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Date To");
 
-        jTextField7.setPreferredSize(new java.awt.Dimension(180, 25));
+        txtTo.setPreferredSize(new java.awt.Dimension(180, 25));
 
         javax.swing.GroupLayout jPanel16Layout = new javax.swing.GroupLayout(jPanel16);
         jPanel16.setLayout(jPanel16Layout);
@@ -104,7 +105,7 @@ public class ReceivedGUI extends javax.swing.JFrame {
             .addGroup(jPanel16Layout.createSequentialGroup()
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField7, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
+                .addComponent(txtTo, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
                 .addGap(12, 12, 12))
         );
         jPanel16Layout.setVerticalGroup(
@@ -113,18 +114,18 @@ public class ReceivedGUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtTo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
         jPanel15.add(jPanel16);
 
-        jButton8.setBackground(new java.awt.Color(98, 110, 212));
-        jButton8.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        jButton8.setForeground(new java.awt.Color(255, 255, 255));
-        jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/search.png"))); // NOI18N
-        jButton8.setPreferredSize(new java.awt.Dimension(60, 25));
-        jPanel15.add(jButton8);
+        btnSearchDate.setBackground(new java.awt.Color(98, 110, 212));
+        btnSearchDate.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        btnSearchDate.setForeground(new java.awt.Color(255, 255, 255));
+        btnSearchDate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/search.png"))); // NOI18N
+        btnSearchDate.setPreferredSize(new java.awt.Dimension(60, 25));
+        jPanel15.add(btnSearchDate);
 
         jPanel5.add(jPanel15);
 
@@ -133,29 +134,37 @@ public class ReceivedGUI extends javax.swing.JFrame {
         jPanel23.setPreferredSize(new java.awt.Dimension(564, 50));
         jPanel23.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 10, 10));
 
-        btnAddRec.setBackground(new java.awt.Color(98, 110, 212));
-        btnAddRec.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        btnAddRec.setForeground(new java.awt.Color(255, 255, 255));
-        btnAddRec.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/add.png"))); // NOI18N
-        btnAddRec.setText("Add");
-        btnAddRec.setPreferredSize(new java.awt.Dimension(100, 30));
-        jPanel23.add(btnAddRec);
+        btnAdd.setBackground(new java.awt.Color(98, 110, 212));
+        btnAdd.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        btnAdd.setForeground(new java.awt.Color(255, 255, 255));
+        btnAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/add.png"))); // NOI18N
+        btnAdd.setText("Add");
+        btnAdd.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanel23.add(btnAdd);
 
-        BtnDelRec.setBackground(new java.awt.Color(98, 110, 212));
-        BtnDelRec.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        BtnDelRec.setForeground(new java.awt.Color(255, 255, 255));
-        BtnDelRec.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/delete.png"))); // NOI18N
-        BtnDelRec.setText("Delete");
-        BtnDelRec.setPreferredSize(new java.awt.Dimension(100, 30));
-        jPanel23.add(BtnDelRec);
+        btnEdit.setBackground(new java.awt.Color(98, 110, 212));
+        btnEdit.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        btnEdit.setForeground(new java.awt.Color(255, 255, 255));
+        btnEdit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/edit.png"))); // NOI18N
+        btnEdit.setText("Edit");
+        btnEdit.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanel23.add(btnEdit);
 
-        jButton5.setBackground(new java.awt.Color(98, 110, 212));
-        jButton5.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        jButton5.setForeground(new java.awt.Color(255, 255, 255));
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/refresh.png"))); // NOI18N
-        jButton5.setText("Reload");
-        jButton5.setPreferredSize(new java.awt.Dimension(100, 30));
-        jPanel23.add(jButton5);
+        btnDelete.setBackground(new java.awt.Color(98, 110, 212));
+        btnDelete.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        btnDelete.setForeground(new java.awt.Color(255, 255, 255));
+        btnDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/delete.png"))); // NOI18N
+        btnDelete.setText("Delete");
+        btnDelete.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanel23.add(btnDelete);
+
+        btnReload.setBackground(new java.awt.Color(98, 110, 212));
+        btnReload.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        btnReload.setForeground(new java.awt.Color(255, 255, 255));
+        btnReload.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/refresh.png"))); // NOI18N
+        btnReload.setText("Reload");
+        btnReload.setPreferredSize(new java.awt.Dimension(100, 30));
+        jPanel23.add(btnReload);
 
         jPanel5.add(jPanel23);
 
@@ -165,18 +174,18 @@ public class ReceivedGUI extends javax.swing.JFrame {
         txtSearch1.setPreferredSize(new java.awt.Dimension(180, 25));
         jPanel26.add(txtSearch1);
 
-        jButton9.setBackground(new java.awt.Color(98, 110, 212));
-        jButton9.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        jButton9.setForeground(new java.awt.Color(255, 255, 255));
-        jButton9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/search.png"))); // NOI18N
-        jButton9.setPreferredSize(new java.awt.Dimension(60, 25));
-        jPanel26.add(jButton9);
+        btnSearch.setBackground(new java.awt.Color(98, 110, 212));
+        btnSearch.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        btnSearch.setForeground(new java.awt.Color(255, 255, 255));
+        btnSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/search.png"))); // NOI18N
+        btnSearch.setPreferredSize(new java.awt.Dimension(60, 25));
+        jPanel26.add(btnSearch);
 
         jPanel5.add(jPanel26);
 
         jScrollPane2.setPreferredSize(new java.awt.Dimension(452, 500));
 
-        tableProduct.setModel(new javax.swing.table.DefaultTableModel(
+        tableReceive.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -195,13 +204,13 @@ public class ReceivedGUI extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
-        tableProduct.setFillsViewportHeight(true);
-        tableProduct.setGridColor(new java.awt.Color(0, 117, 217));
-        tableProduct.setRowHeight(30);
-        tableProduct.setSelectionBackground(new java.awt.Color(0, 117, 217));
-        tableProduct.setSelectionForeground(new java.awt.Color(255, 255, 255));
-        tableProduct.setShowGrid(true);
-        jScrollPane2.setViewportView(tableProduct);
+        tableReceive.setFillsViewportHeight(true);
+        tableReceive.setGridColor(new java.awt.Color(0, 117, 217));
+        tableReceive.setRowHeight(30);
+        tableReceive.setSelectionBackground(new java.awt.Color(0, 117, 217));
+        tableReceive.setSelectionForeground(new java.awt.Color(255, 255, 255));
+        tableReceive.setShowGrid(true);
+        jScrollPane2.setViewportView(tableReceive);
 
         jPanel5.add(jScrollPane2);
 
@@ -211,18 +220,18 @@ public class ReceivedGUI extends javax.swing.JFrame {
         txtSearch.setPreferredSize(new java.awt.Dimension(180, 25));
         jPanel25.add(txtSearch);
 
-        jButton7.setBackground(new java.awt.Color(98, 110, 212));
-        jButton7.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        jButton7.setForeground(new java.awt.Color(255, 255, 255));
-        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/search.png"))); // NOI18N
-        jButton7.setPreferredSize(new java.awt.Dimension(60, 25));
-        jPanel25.add(jButton7);
+        btnSearchDetail.setBackground(new java.awt.Color(98, 110, 212));
+        btnSearchDetail.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        btnSearchDetail.setForeground(new java.awt.Color(255, 255, 255));
+        btnSearchDetail.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/search.png"))); // NOI18N
+        btnSearchDetail.setPreferredSize(new java.awt.Dimension(60, 25));
+        jPanel25.add(btnSearchDetail);
 
         jPanel5.add(jPanel25);
 
         jScrollPane3.setPreferredSize(new java.awt.Dimension(452, 500));
 
-        tableProduct1.setModel(new javax.swing.table.DefaultTableModel(
+        tableDetail.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -241,13 +250,13 @@ public class ReceivedGUI extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
-        tableProduct1.setFillsViewportHeight(true);
-        tableProduct1.setGridColor(new java.awt.Color(0, 117, 217));
-        tableProduct1.setRowHeight(30);
-        tableProduct1.setSelectionBackground(new java.awt.Color(0, 117, 217));
-        tableProduct1.setSelectionForeground(new java.awt.Color(255, 255, 255));
-        tableProduct1.setShowGrid(true);
-        jScrollPane3.setViewportView(tableProduct1);
+        tableDetail.setFillsViewportHeight(true);
+        tableDetail.setGridColor(new java.awt.Color(0, 117, 217));
+        tableDetail.setRowHeight(30);
+        tableDetail.setSelectionBackground(new java.awt.Color(0, 117, 217));
+        tableDetail.setSelectionForeground(new java.awt.Color(255, 255, 255));
+        tableDetail.setShowGrid(true);
+        jScrollPane3.setViewportView(tableDetail);
 
         jPanel5.add(jScrollPane3);
 
@@ -303,12 +312,13 @@ public class ReceivedGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton BtnDelRec;
-    private javax.swing.JButton btnAddRec;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
-    private javax.swing.JButton jButton9;
+    private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnEdit;
+    private javax.swing.JButton btnReload;
+    private javax.swing.JButton btnSearch;
+    private javax.swing.JButton btnSearchDate;
+    private javax.swing.JButton btnSearchDetail;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel12;
@@ -320,11 +330,11 @@ public class ReceivedGUI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTable tableProduct;
-    private javax.swing.JTable tableProduct1;
+    private javax.swing.JTable tableDetail;
+    private javax.swing.JTable tableReceive;
+    private javax.swing.JTextField txtFrom;
     private javax.swing.JTextField txtSearch;
     private javax.swing.JTextField txtSearch1;
+    private javax.swing.JTextField txtTo;
     // End of variables declaration//GEN-END:variables
 }

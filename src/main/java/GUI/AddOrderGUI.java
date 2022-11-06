@@ -4,6 +4,18 @@
  */
 package GUI;
 
+import BLL.OrderBLL;
+import DAL.Order;
+import DAL.OrderDetail;
+import DAL.Product;
+import DAL.User;
+import java.util.ArrayList;
+import java.util.Vector;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
+
 /**
  *
  * @author phamt
@@ -13,8 +25,30 @@ public class AddOrderGUI extends javax.swing.JFrame {
     /**
      * Creates new form OrderGUI
      */
+    private OrderGUI orderGUI;
+    private User user = new User();
+    private Product product = new Product();
+
+    private OrderBLL orderBLL = new OrderBLL();
+    private Order order = new Order();
+    private ArrayList<OrderDetail> odList = new ArrayList<>();
+    private int totalQty = 0;
+    private Double totalPrice = 0.0;
+
+    private DefaultTableModel modelDetail = new DefaultTableModel();
+    private int[] headerDetail = {100, 250, 150, 150, 150};
+    private String[] headerTitleDetail = {"ProdID", "Name", "Qty", "Price", "Subtotal"};
+
     public AddOrderGUI() {
         initComponents();
+    }
+
+    public AddOrderGUI(OrderGUI orderGUI) {
+        initComponents();
+        this.orderGUI = orderGUI;
+        this.pack();
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
     }
 
     /**
@@ -31,50 +65,49 @@ public class AddOrderGUI extends javax.swing.JFrame {
         jPanel13 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jPanel9 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
-        jTextField7 = new javax.swing.JTextField();
-        jPanel17 = new javax.swing.JPanel();
-        jPanel19 = new javax.swing.JPanel();
-        jLabel6 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
-        jPanel18 = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        txtUser = new javax.swing.JTextField();
+        btnHelpUser = new javax.swing.JButton();
         jPanel12 = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField16 = new javax.swing.JTextField();
+        txtAddress = new javax.swing.JTextField();
         jPanel10 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
+        txtCity = new javax.swing.JTextField();
+        jPanel17 = new javax.swing.JPanel();
+        txtTotalQty = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        txtTotalqty = new javax.swing.JTextField();
+        jPanel18 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        txtTotalPrice = new javax.swing.JTextField();
         jPanel26 = new javax.swing.JPanel();
         jPanel27 = new javax.swing.JPanel();
         jPanel28 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
-        jTextField12 = new javax.swing.JTextField();
+        txtProduct = new javax.swing.JTextField();
+        btnHelpProd = new javax.swing.JButton();
         jPanel29 = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
-        jTextField13 = new javax.swing.JTextField();
+        txtQty = new javax.swing.JTextField();
         jPanel30 = new javax.swing.JPanel();
         jPanel31 = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
-        jTextField14 = new javax.swing.JTextField();
+        txtPrice = new javax.swing.JTextField();
         jPanel32 = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
-        jTextField15 = new javax.swing.JTextField();
+        txtSubtotal = new javax.swing.JTextField();
         jPanel14 = new javax.swing.JPanel();
-        jButton6 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btnAdd = new javax.swing.JButton();
+        btnEdit = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
+        btnReset = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
-        tableProduct1 = new javax.swing.JTable();
+        tableDetail = new javax.swing.JTable();
         jPanel16 = new javax.swing.JPanel();
-        jButton8 = new javax.swing.JButton();
+        btnConfirm = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(34, 39, 54));
         jPanel1.setPreferredSize(new java.awt.Dimension(800, 594));
@@ -93,129 +126,27 @@ public class AddOrderGUI extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Customer");
+        jPanel7.add(jLabel1);
 
-        jTextField2.setPreferredSize(new java.awt.Dimension(180, 25));
+        txtUser.setEnabled(false);
+        txtUser.setPreferredSize(new java.awt.Dimension(180, 25));
+        jPanel7.add(txtUser);
 
-        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
-        jPanel7.setLayout(jPanel7Layout);
-        jPanel7Layout.setHorizontalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
-                .addGap(12, 12, 12))
-        );
-        jPanel7Layout.setVerticalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
-        );
+        btnHelpUser.setBackground(new java.awt.Color(98, 110, 212));
+        btnHelpUser.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        btnHelpUser.setForeground(new java.awt.Color(255, 255, 255));
+        btnHelpUser.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/dots.png"))); // NOI18N
+        btnHelpUser.setPreferredSize(new java.awt.Dimension(40, 25));
+        btnHelpUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHelpUserActionPerformed(evt);
+            }
+        });
+        jPanel7.add(btnHelpUser);
 
         jPanel13.add(jPanel7);
 
-        jPanel9.setBackground(new java.awt.Color(42, 48, 66));
-
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Employee");
-
-        jTextField7.setPreferredSize(new java.awt.Dimension(180, 25));
-
-        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
-        jPanel9.setLayout(jPanel9Layout);
-        jPanel9Layout.setHorizontalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel9Layout.createSequentialGroup()
-                .addGap(5, 5, 5)
-                .addComponent(jLabel3)
-                .addGap(18, 18, 18)
-                .addComponent(jTextField7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel9Layout.setVerticalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel9Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
-        );
-
-        jPanel13.add(jPanel9);
-
         jPanel6.add(jPanel13);
-
-        jPanel17.setBackground(new java.awt.Color(42, 48, 66));
-        jPanel17.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 25, 5));
-
-        jPanel19.setBackground(new java.awt.Color(42, 48, 66));
-
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("Total Quantity");
-
-        jTextField6.setPreferredSize(new java.awt.Dimension(180, 25));
-
-        javax.swing.GroupLayout jPanel19Layout = new javax.swing.GroupLayout(jPanel19);
-        jPanel19.setLayout(jPanel19Layout);
-        jPanel19Layout.setHorizontalGroup(
-            jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel19Layout.createSequentialGroup()
-                .addGap(36, 36, 36)
-                .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField6, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
-                .addGap(12, 12, 12))
-        );
-        jPanel19Layout.setVerticalGroup(
-            jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel19Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
-        );
-
-        jPanel17.add(jPanel19);
-
-        jPanel18.setBackground(new java.awt.Color(42, 48, 66));
-
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("Total Price");
-
-        jTextField4.setPreferredSize(new java.awt.Dimension(180, 25));
-
-        javax.swing.GroupLayout jPanel18Layout = new javax.swing.GroupLayout(jPanel18);
-        jPanel18.setLayout(jPanel18Layout);
-        jPanel18Layout.setHorizontalGroup(
-            jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel18Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField4, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
-                .addGap(66, 66, 66))
-        );
-        jPanel18Layout.setVerticalGroup(
-            jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel18Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
-        );
-
-        jPanel17.add(jPanel18);
-
-        jPanel6.add(jPanel17);
 
         jPanel12.setBackground(new java.awt.Color(42, 48, 66));
         jPanel12.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 30, 5));
@@ -226,7 +157,7 @@ public class AddOrderGUI extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Address");
 
-        jTextField16.setPreferredSize(new java.awt.Dimension(180, 25));
+        txtAddress.setPreferredSize(new java.awt.Dimension(180, 25));
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
@@ -236,7 +167,7 @@ public class AddOrderGUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(24, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
@@ -246,7 +177,7 @@ public class AddOrderGUI extends javax.swing.JFrame {
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel2))
-                    .addComponent(jTextField16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -258,7 +189,7 @@ public class AddOrderGUI extends javax.swing.JFrame {
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("City");
 
-        jTextField5.setPreferredSize(new java.awt.Dimension(180, 25));
+        txtCity.setPreferredSize(new java.awt.Dimension(180, 25));
 
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
@@ -268,7 +199,7 @@ public class AddOrderGUI extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel4)
                 .addGap(24, 24, 24)
-                .addComponent(jTextField5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(txtCity, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -276,13 +207,82 @@ public class AddOrderGUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtCity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
         jPanel12.add(jPanel10);
 
         jPanel6.add(jPanel12);
+
+        jPanel17.setBackground(new java.awt.Color(42, 48, 66));
+        jPanel17.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 25, 5));
+
+        txtTotalQty.setBackground(new java.awt.Color(42, 48, 66));
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setText("Total Quantity");
+
+        txtTotalqty.setEnabled(false);
+        txtTotalqty.setPreferredSize(new java.awt.Dimension(180, 25));
+
+        javax.swing.GroupLayout txtTotalQtyLayout = new javax.swing.GroupLayout(txtTotalQty);
+        txtTotalQty.setLayout(txtTotalQtyLayout);
+        txtTotalQtyLayout.setHorizontalGroup(
+            txtTotalQtyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(txtTotalQtyLayout.createSequentialGroup()
+                .addGap(36, 36, 36)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtTotalqty, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
+                .addGap(12, 12, 12))
+        );
+        txtTotalQtyLayout.setVerticalGroup(
+            txtTotalQtyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(txtTotalQtyLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(txtTotalQtyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(txtTotalqty, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+
+        jPanel17.add(txtTotalQty);
+
+        jPanel18.setBackground(new java.awt.Color(42, 48, 66));
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("Total Price");
+
+        txtTotalPrice.setEnabled(false);
+        txtTotalPrice.setPreferredSize(new java.awt.Dimension(180, 25));
+
+        javax.swing.GroupLayout jPanel18Layout = new javax.swing.GroupLayout(jPanel18);
+        jPanel18.setLayout(jPanel18Layout);
+        jPanel18Layout.setHorizontalGroup(
+            jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel18Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtTotalPrice, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
+                .addGap(66, 66, 66))
+        );
+        jPanel18Layout.setVerticalGroup(
+            jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel18Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(txtTotalPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+
+        jPanel17.add(jPanel18);
+
+        jPanel6.add(jPanel17);
 
         jPanel1.add(jPanel6);
 
@@ -299,28 +299,23 @@ public class AddOrderGUI extends javax.swing.JFrame {
         jLabel12.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(255, 255, 255));
         jLabel12.setText("Product");
+        jPanel28.add(jLabel12);
 
-        jTextField12.setPreferredSize(new java.awt.Dimension(180, 30));
+        txtProduct.setEnabled(false);
+        txtProduct.setPreferredSize(new java.awt.Dimension(180, 25));
+        jPanel28.add(txtProduct);
 
-        javax.swing.GroupLayout jPanel28Layout = new javax.swing.GroupLayout(jPanel28);
-        jPanel28.setLayout(jPanel28Layout);
-        jPanel28Layout.setHorizontalGroup(
-            jPanel28Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel28Layout.createSequentialGroup()
-                .addComponent(jLabel12)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField12, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
-                .addGap(12, 12, 12))
-        );
-        jPanel28Layout.setVerticalGroup(
-            jPanel28Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel28Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel28Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel12)
-                    .addComponent(jTextField12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
-        );
+        btnHelpProd.setBackground(new java.awt.Color(98, 110, 212));
+        btnHelpProd.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        btnHelpProd.setForeground(new java.awt.Color(255, 255, 255));
+        btnHelpProd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/dots.png"))); // NOI18N
+        btnHelpProd.setPreferredSize(new java.awt.Dimension(40, 25));
+        btnHelpProd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHelpProdActionPerformed(evt);
+            }
+        });
+        jPanel28.add(btnHelpProd);
 
         jPanel27.add(jPanel28);
 
@@ -330,7 +325,17 @@ public class AddOrderGUI extends javax.swing.JFrame {
         jLabel13.setForeground(new java.awt.Color(255, 255, 255));
         jLabel13.setText("Quantity");
 
-        jTextField13.setPreferredSize(new java.awt.Dimension(180, 30));
+        txtQty.setPreferredSize(new java.awt.Dimension(180, 25));
+        txtQty.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtQtyFocusLost(evt);
+            }
+        });
+        txtQty.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtQtyKeyReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel29Layout = new javax.swing.GroupLayout(jPanel29);
         jPanel29.setLayout(jPanel29Layout);
@@ -340,7 +345,7 @@ public class AddOrderGUI extends javax.swing.JFrame {
                 .addGap(5, 5, 5)
                 .addComponent(jLabel13)
                 .addGap(18, 18, 18)
-                .addComponent(jTextField13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(txtQty, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel29Layout.setVerticalGroup(
             jPanel29Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -348,7 +353,7 @@ public class AddOrderGUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel29Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
-                    .addComponent(jTextField13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtQty, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -366,7 +371,8 @@ public class AddOrderGUI extends javax.swing.JFrame {
         jLabel14.setForeground(new java.awt.Color(255, 255, 255));
         jLabel14.setText("Price");
 
-        jTextField14.setPreferredSize(new java.awt.Dimension(180, 30));
+        txtPrice.setEnabled(false);
+        txtPrice.setPreferredSize(new java.awt.Dimension(180, 25));
 
         javax.swing.GroupLayout jPanel31Layout = new javax.swing.GroupLayout(jPanel31);
         jPanel31.setLayout(jPanel31Layout);
@@ -376,7 +382,7 @@ public class AddOrderGUI extends javax.swing.JFrame {
                 .addGap(0, 22, Short.MAX_VALUE)
                 .addComponent(jLabel14)
                 .addGap(18, 18, 18)
-                .addComponent(jTextField14, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel31Layout.setVerticalGroup(
@@ -385,7 +391,7 @@ public class AddOrderGUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel31Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14)
-                    .addComponent(jTextField14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -397,7 +403,8 @@ public class AddOrderGUI extends javax.swing.JFrame {
         jLabel15.setForeground(new java.awt.Color(255, 255, 255));
         jLabel15.setText("Subtotal");
 
-        jTextField15.setPreferredSize(new java.awt.Dimension(180, 30));
+        txtSubtotal.setEnabled(false);
+        txtSubtotal.setPreferredSize(new java.awt.Dimension(180, 25));
 
         javax.swing.GroupLayout jPanel32Layout = new javax.swing.GroupLayout(jPanel32);
         jPanel32.setLayout(jPanel32Layout);
@@ -407,7 +414,7 @@ public class AddOrderGUI extends javax.swing.JFrame {
                 .addGap(24, 24, 24)
                 .addComponent(jLabel15)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField15, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
+                .addComponent(txtSubtotal, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
                 .addGap(12, 12, 12))
         );
         jPanel32Layout.setVerticalGroup(
@@ -416,7 +423,7 @@ public class AddOrderGUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel32Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel15)
-                    .addComponent(jTextField15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtSubtotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -431,43 +438,63 @@ public class AddOrderGUI extends javax.swing.JFrame {
         jPanel14.setPreferredSize(new java.awt.Dimension(564, 50));
         jPanel14.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 10, 10));
 
-        jButton6.setBackground(new java.awt.Color(98, 110, 212));
-        jButton6.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        jButton6.setForeground(new java.awt.Color(255, 255, 255));
-        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/reset.png"))); // NOI18N
-        jButton6.setText("Reset");
-        jButton6.setPreferredSize(new java.awt.Dimension(100, 30));
-        jPanel14.add(jButton6);
+        btnAdd.setBackground(new java.awt.Color(98, 110, 212));
+        btnAdd.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        btnAdd.setForeground(new java.awt.Color(255, 255, 255));
+        btnAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/add.png"))); // NOI18N
+        btnAdd.setText("Add");
+        btnAdd.setPreferredSize(new java.awt.Dimension(100, 30));
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
+        jPanel14.add(btnAdd);
 
-        jButton2.setBackground(new java.awt.Color(98, 110, 212));
-        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/add.png"))); // NOI18N
-        jButton2.setText("Add");
-        jButton2.setPreferredSize(new java.awt.Dimension(100, 30));
-        jPanel14.add(jButton2);
+        btnEdit.setBackground(new java.awt.Color(98, 110, 212));
+        btnEdit.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        btnEdit.setForeground(new java.awt.Color(255, 255, 255));
+        btnEdit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/edit.png"))); // NOI18N
+        btnEdit.setText("Edit");
+        btnEdit.setPreferredSize(new java.awt.Dimension(100, 30));
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
+            }
+        });
+        jPanel14.add(btnEdit);
 
-        jButton4.setBackground(new java.awt.Color(98, 110, 212));
-        jButton4.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        jButton4.setForeground(new java.awt.Color(255, 255, 255));
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/delete.png"))); // NOI18N
-        jButton4.setText("Delete");
-        jButton4.setPreferredSize(new java.awt.Dimension(100, 30));
-        jPanel14.add(jButton4);
+        btnDelete.setBackground(new java.awt.Color(98, 110, 212));
+        btnDelete.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        btnDelete.setForeground(new java.awt.Color(255, 255, 255));
+        btnDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/delete.png"))); // NOI18N
+        btnDelete.setText("Delete");
+        btnDelete.setPreferredSize(new java.awt.Dimension(100, 30));
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
+        jPanel14.add(btnDelete);
 
-        jButton3.setBackground(new java.awt.Color(98, 110, 212));
-        jButton3.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(255, 255, 255));
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/edit.png"))); // NOI18N
-        jButton3.setText("Edit");
-        jButton3.setPreferredSize(new java.awt.Dimension(100, 30));
-        jPanel14.add(jButton3);
+        btnReset.setBackground(new java.awt.Color(98, 110, 212));
+        btnReset.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        btnReset.setForeground(new java.awt.Color(255, 255, 255));
+        btnReset.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/reset.png"))); // NOI18N
+        btnReset.setText("Reset");
+        btnReset.setPreferredSize(new java.awt.Dimension(100, 30));
+        btnReset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnResetActionPerformed(evt);
+            }
+        });
+        jPanel14.add(btnReset);
 
         jPanel1.add(jPanel14);
 
         jScrollPane3.setPreferredSize(new java.awt.Dimension(452, 500));
 
-        tableProduct1.setModel(new javax.swing.table.DefaultTableModel(
+        tableDetail.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -475,24 +502,29 @@ public class AddOrderGUI extends javax.swing.JFrame {
                 {null, null, null, null, null}
             },
             new String [] {
-                "Order ID", "Product ID", "Quantity", "Price", "Subtotal"
+                "Product ID", "Name", "Quantity", "Price", "Subtotal"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Double.class, java.lang.Double.class
+                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Double.class, java.lang.Double.class
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
         });
-        tableProduct1.setFillsViewportHeight(true);
-        tableProduct1.setGridColor(new java.awt.Color(0, 117, 217));
-        tableProduct1.setRowHeight(30);
-        tableProduct1.setSelectionBackground(new java.awt.Color(0, 117, 217));
-        tableProduct1.setSelectionForeground(new java.awt.Color(255, 255, 255));
-        tableProduct1.setShowGrid(true);
-        jScrollPane3.setViewportView(tableProduct1);
+        tableDetail.setFillsViewportHeight(true);
+        tableDetail.setGridColor(new java.awt.Color(0, 117, 217));
+        tableDetail.setRowHeight(30);
+        tableDetail.setSelectionBackground(new java.awt.Color(0, 117, 217));
+        tableDetail.setSelectionForeground(new java.awt.Color(255, 255, 255));
+        tableDetail.setShowGrid(true);
+        tableDetail.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableDetailMouseClicked(evt);
+            }
+        });
+        jScrollPane3.setViewportView(tableDetail);
 
         jPanel1.add(jScrollPane3);
 
@@ -500,13 +532,18 @@ public class AddOrderGUI extends javax.swing.JFrame {
         jPanel16.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 2, true));
         jPanel16.setPreferredSize(new java.awt.Dimension(268, 50));
 
-        jButton8.setBackground(new java.awt.Color(98, 110, 212));
-        jButton8.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        jButton8.setForeground(new java.awt.Color(255, 255, 255));
-        jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/add.png"))); // NOI18N
-        jButton8.setText("Confirm");
-        jButton8.setPreferredSize(new java.awt.Dimension(120, 30));
-        jPanel16.add(jButton8);
+        btnConfirm.setBackground(new java.awt.Color(98, 110, 212));
+        btnConfirm.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        btnConfirm.setForeground(new java.awt.Color(255, 255, 255));
+        btnConfirm.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/add.png"))); // NOI18N
+        btnConfirm.setText("Confirm");
+        btnConfirm.setPreferredSize(new java.awt.Dimension(120, 30));
+        btnConfirm.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConfirmActionPerformed(evt);
+            }
+        });
+        jPanel16.add(btnConfirm);
 
         jPanel1.add(jPanel16);
 
@@ -523,6 +560,235 @@ public class AddOrderGUI extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnHelpProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHelpProdActionPerformed
+        ProductHelper prodHelp = new ProductHelper(this);
+    }//GEN-LAST:event_btnHelpProdActionPerformed
+
+    private void btnHelpUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHelpUserActionPerformed
+        UserHelper userHelp = new UserHelper(this);
+    }//GEN-LAST:event_btnHelpUserActionPerformed
+
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        try {
+            Double price = Double.parseDouble(txtPrice.getText());
+            int qty = Integer.parseInt(txtQty.getText());
+
+            totalQty += qty;
+            txtTotalqty.setText(totalQty + "");
+
+            Double subtotal = price * qty;
+            totalPrice += subtotal;
+            txtTotalPrice.setText(totalPrice + "");
+
+            OrderDetail od = new OrderDetail(order, product, price, qty, subtotal);
+            odList.add(od);
+
+            JOptionPane.showMessageDialog(this, "Add detail success");
+            resetDetailForm();
+            setDetailToTable();
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+    }//GEN-LAST:event_btnAddActionPerformed
+
+    private void txtQtyFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtQtyFocusLost
+
+    }//GEN-LAST:event_txtQtyFocusLost
+
+    private void txtQtyKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtQtyKeyReleased
+        try {
+            int qty = Integer.parseInt(txtQty.getText());
+            if (product.getStock() < qty) {
+                JOptionPane.showMessageDialog(this, "Your input qty is greater than stock!!!");
+                txtQty.setText("");
+            } else {
+                Double subtotal = product.getPrice() * qty;
+                txtSubtotal.setText(subtotal + "");
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Your in put must be number");
+            txtQty.setText("");
+            System.out.println(ex.getMessage());
+        }
+    }//GEN-LAST:event_txtQtyKeyReleased
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        int i = tableDetail.getSelectedRow();
+        if (i != -1) {
+            int choice = JOptionPane.showConfirmDialog(this, "Are you sure want to delete it", "Confirm Dialog", JOptionPane.YES_NO_OPTION);
+            if (choice == JOptionPane.YES_OPTION) {
+                this.totalDown(odList.get(i));
+
+                odList.remove(i);
+                setDetailToTable();
+
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Please choose record you want to delete first");
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        int i = tableDetail.getSelectedRow();
+        if (i != -1) {
+            try {
+                Double price = Double.parseDouble(txtPrice.getText());
+                int qty = Integer.parseInt(txtQty.getText());
+                Double subtotal = price * qty;
+
+                OrderDetail od = new OrderDetail(order, product, price, qty, subtotal);
+
+                totalDown(odList.get(i));
+                totalUp(od);
+
+                odList.set(i, od);
+
+                JOptionPane.showMessageDialog(this, "Edit detail success");
+                setDetailToTable();
+            } catch (Exception ex) {
+                System.out.println(ex.getMessage());
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Please choose record you want to edit first");
+        }
+    }//GEN-LAST:event_btnEditActionPerformed
+
+    private void tableDetailMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableDetailMouseClicked
+        int i = tableDetail.getSelectedRow();
+        if (i != -1) {
+            txtProduct.setText(tableDetail.getModel().getValueAt(i, 1).toString());
+            txtQty.setText(tableDetail.getModel().getValueAt(i, 2).toString());
+            txtPrice.setText(tableDetail.getModel().getValueAt(i, 3).toString());
+            txtSubtotal.setText(tableDetail.getModel().getValueAt(i, 4).toString());
+        }
+    }//GEN-LAST:event_tableDetailMouseClicked
+
+    private void btnConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmActionPerformed
+        java.util.Date dt = new java.util.Date();
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String currentTime = sdf.format(dt);
+
+        order.setUser(user);
+        order.setDate(currentTime);
+        order.setAddress(txtAddress.getText());
+        order.setCity(txtCity.getText());
+        order.setTotalQty(Integer.parseInt(txtTotalqty.getText()));
+        order.setTotalPrice(Double.parseDouble(txtTotalPrice.getText()));
+        order.setOrderDetails(odList);
+
+        System.out.println(odList.get(0).getOrder().getTotalPrice());
+
+        if (orderBLL.saveOrder(order)) {
+            JOptionPane.showMessageDialog(this, "Add order successfully");
+            this.setVisible(false);
+            this.orderGUI.loadAllOrders();
+        } else {
+            JOptionPane.showMessageDialog(this, "Add order fail");
+        }
+    }//GEN-LAST:event_btnConfirmActionPerformed
+
+    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
+        resetDetailForm();
+        resetOrderForm();
+    }//GEN-LAST:event_btnResetActionPerformed
+
+    public void setDetailToTable() {
+
+//        modelDetail = this.initTableModel(modelDetail, headerTitleDetail);
+        modelDetail = (DefaultTableModel) tableDetail.getModel();
+        modelDetail.setRowCount(0);
+
+        for (OrderDetail od : odList) {
+            System.out.println(odList.size());
+            Vector row = new Vector();
+            row.add(od.getProduct().getProductID());
+            row.add(od.getProduct().getName());
+            row.add(od.getQty());
+            row.add(od.getPrice());
+            row.add(od.getSubtotal());
+
+            modelDetail.addRow(row);
+
+        }
+        tableDetail.setModel(modelDetail);
+        setColumnWidth(tableDetail, headerDetail);
+
+    }
+
+    public DefaultTableModel initTableModel(DefaultTableModel model, String[] name) {
+        Vector header = new Vector();
+        for (String s : name) {
+            header.add(s);
+        }
+        model = new DefaultTableModel(header, 0);
+        return model;
+    }
+
+    public void setColumnWidth(JTable tbl, int[] width) {
+        tbl.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+        TableColumnModel columnModel = tbl.getColumnModel();
+        for (int i = 0; i < width.length; i++) {
+            if (i < columnModel.getColumnCount()) {
+                columnModel.getColumn(i).setMaxWidth(width[i]);
+            } else {
+                break;
+            }
+        }
+
+    }
+
+    public void totalDown(OrderDetail od) {
+        totalQty -= od.getQty();
+        txtTotalqty.setText(totalQty + "");
+
+        totalPrice -= od.getPrice() * od.getQty();
+        txtTotalPrice.setText(totalPrice + "");
+
+    }
+
+    public void totalUp(OrderDetail od) {
+        totalQty += od.getQty();
+        txtTotalqty.setText(totalQty + "");
+
+        totalPrice += od.getPrice() * od.getQty();
+        txtTotalPrice.setText(totalPrice + "");
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+        txtUser.setText(user.getFirstName() + " " + user.getLastName());
+    }
+
+    public boolean setProduct(Product product) {
+        for (OrderDetail od : odList) {
+            if (od.getProduct().getProductID() == product.getProductID()) {
+                return false;
+            }
+        }
+
+        this.product = product;
+        txtProduct.setText(product.getName());
+        txtPrice.setText(product.getPrice() + "");
+        return true;
+    }
+
+    public void resetDetailForm() {
+        txtProduct.setText("");
+        txtQty.setText("");
+        txtPrice.setText("");
+        txtSubtotal.setText("");
+
+    }
+
+    public void resetOrderForm() {
+        txtUser.setText("");
+        txtQty.setText("");
+        txtPrice.setText("");
+        txtSubtotal.setText("");
+
+    }
 
     /**
      * @param args the command line arguments
@@ -561,18 +827,19 @@ public class AddOrderGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton8;
+    private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnConfirm;
+    private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnEdit;
+    private javax.swing.JButton btnHelpProd;
+    private javax.swing.JButton btnHelpUser;
+    private javax.swing.JButton btnReset;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -584,7 +851,6 @@ public class AddOrderGUI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel18;
-    private javax.swing.JPanel jPanel19;
     private javax.swing.JPanel jPanel26;
     private javax.swing.JPanel jPanel27;
     private javax.swing.JPanel jPanel28;
@@ -595,18 +861,17 @@ public class AddOrderGUI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
-    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTextField jTextField12;
-    private javax.swing.JTextField jTextField13;
-    private javax.swing.JTextField jTextField14;
-    private javax.swing.JTextField jTextField15;
-    private javax.swing.JTextField jTextField16;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTable tableProduct1;
+    private javax.swing.JTable tableDetail;
+    private javax.swing.JTextField txtAddress;
+    private javax.swing.JTextField txtCity;
+    private javax.swing.JTextField txtPrice;
+    private javax.swing.JTextField txtProduct;
+    private javax.swing.JTextField txtQty;
+    private javax.swing.JTextField txtSubtotal;
+    private javax.swing.JTextField txtTotalPrice;
+    private javax.swing.JPanel txtTotalQty;
+    private javax.swing.JTextField txtTotalqty;
+    private javax.swing.JTextField txtUser;
     // End of variables declaration//GEN-END:variables
 }

@@ -4,17 +4,40 @@
  */
 package GUI;
 
+import BLL.UserBLL;
+import DAL.User;
+import java.util.ArrayList;
+import java.util.Vector;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author phamt
  */
-public class HelpGUI extends javax.swing.JFrame {
+public class UserHelper extends javax.swing.JFrame {
 
     /**
-     * Creates new form OrderDetailGUI
+     * Creates new form UserHelper
      */
-    public HelpGUI() {
+    private AddOrderGUI addGUI;
+    DefaultTableModel model;
+    UserBLL userBLL = new UserBLL();
+    User user = new User();
+
+    ArrayList<User> userList = new ArrayList<>();
+
+    public UserHelper() {
         initComponents();
+    }
+
+    public UserHelper(AddOrderGUI addGUI) {
+        initComponents();
+        this.addGUI = addGUI;
+        this.loadAllProducts();
+        this.pack();
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
     }
 
     /**
@@ -28,13 +51,12 @@ public class HelpGUI extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jPanel25 = new javax.swing.JPanel();
-        jComboBox1 = new javax.swing.JComboBox<>();
         txtSearch = new javax.swing.JTextField();
         jButton7 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        tableProduct = new javax.swing.JTable();
+        tableUser = new javax.swing.JTable();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(34, 39, 54));
         jPanel1.setPreferredSize(new java.awt.Dimension(800, 594));
@@ -42,9 +64,6 @@ public class HelpGUI extends javax.swing.JFrame {
 
         jPanel25.setBackground(new java.awt.Color(34, 39, 54));
         jPanel25.setPreferredSize(new java.awt.Dimension(268, 50));
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Product Name", "Cate Name" }));
-        jPanel25.add(jComboBox1);
 
         txtSearch.setPreferredSize(new java.awt.Dimension(180, 25));
         jPanel25.add(txtSearch);
@@ -58,32 +77,37 @@ public class HelpGUI extends javax.swing.JFrame {
 
         jPanel1.add(jPanel25);
 
-        tableProduct.setModel(new javax.swing.table.DefaultTableModel(
+        tableUser.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "ID", "Name", "Stock", "Price", "Stock", "Description", "Cate"
+                "ID", "First Name", "Last Name", "Email", "Phone"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
         });
-        tableProduct.setFillsViewportHeight(true);
-        tableProduct.setGridColor(new java.awt.Color(0, 117, 217));
-        tableProduct.setRowHeight(30);
-        tableProduct.setSelectionBackground(new java.awt.Color(0, 117, 217));
-        tableProduct.setSelectionForeground(new java.awt.Color(255, 255, 255));
-        tableProduct.setShowGrid(true);
-        jScrollPane2.setViewportView(tableProduct);
+        tableUser.setFillsViewportHeight(true);
+        tableUser.setGridColor(new java.awt.Color(0, 117, 217));
+        tableUser.setRowHeight(30);
+        tableUser.setSelectionBackground(new java.awt.Color(0, 117, 217));
+        tableUser.setSelectionForeground(new java.awt.Color(255, 255, 255));
+        tableUser.setShowGrid(true);
+        tableUser.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableUserMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tableUser);
 
         jPanel1.add(jScrollPane2);
 
@@ -95,11 +119,48 @@ public class HelpGUI extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 403, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void tableUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableUserMouseClicked
+         int i = tableUser.getSelectedRow();
+        if (i != -1) {
+            user = userList.get(i);
+            
+            addGUI.setUser(user);
+            
+            this.setVisible(false);
+        }
+    }//GEN-LAST:event_tableUserMouseClicked
+
+    public void setValueToTable(ArrayList<User> userList) {
+        model = (DefaultTableModel) tableUser.getModel();
+        model.setRowCount(0);
+
+        for (User user : userList) {
+            Vector row = new Vector();
+            row.add(user.getUserID());
+            row.add(user.getFirstName());
+            row.add(user.getLastName());
+            row.add(user.getEmail());
+            row.add(user.getPhone());
+
+            model.addRow(row);
+        }
+        tableUser.setModel(model);
+    }
+
+    public void loadAllProducts() {
+        userList = userBLL.getAllCustomer();
+        if (userList != null) {
+            setValueToTable(userList);
+        } else {
+            JOptionPane.showMessageDialog(this, "Cannot get list product!!!");
+        }
+    }
 
     /**
      * @param args the command line arguments
@@ -118,34 +179,30 @@ public class HelpGUI extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(HelpGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UserHelper.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(HelpGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UserHelper.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(HelpGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UserHelper.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(HelpGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(UserHelper.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new HelpGUI().setVisible(true);
+                new UserHelper().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton7;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel25;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable tableProduct;
+    private javax.swing.JTable tableUser;
     private javax.swing.JTextField txtSearch;
     // End of variables declaration//GEN-END:variables
 }
