@@ -7,7 +7,12 @@ package GUI;
 import BLL.OrderBLL;
 import DAL.Order;
 import DAL.OrderDetail;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Locale;
 import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -28,8 +33,8 @@ public class OrderGUI extends javax.swing.JFrame {
 
     private DefaultTableModel modelOrder = new DefaultTableModel();
     private DefaultTableModel modelDetail = new DefaultTableModel();
-    private int[] headerOrder = {50, 150, 150, 150, 100, 100, 100};
-    private int[] headerDetail = {100, 100, 200, 150, 150, 150};
+    private int[] headerOrder = {50, 150, 150, 200, 100, 100, 100};
+    private int[] headerDetail = {100, 100, 250, 150, 150, 150};
 
     private String[] headerTitleOrder = {"ID", "Customer", "Date ", "Address", "City", "TotalQty", "TotalPrice"};
     private String[] headerTitleDetail = {"OrderID", "ProdID", "Name", "Qty", "Price", "Subtotal"};
@@ -80,12 +85,16 @@ public class OrderGUI extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         tableDetail = new javax.swing.JTable();
 
+        dateChooser1.setDateFormat("yyyy-MM-dd");
         dateChooser1.setTextRefernce(txtFrom);
 
         dateChooser2.setForeground(new java.awt.Color(102, 102, 255));
+        dateChooser2.setDateFormat("yyyy-MM-dd");
         dateChooser2.setTextRefernce(txtTo);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Sale Management");
+        setPreferredSize(new java.awt.Dimension(850, 650));
 
         jPanel5.setBackground(new java.awt.Color(34, 39, 54));
         jPanel5.setPreferredSize(new java.awt.Dimension(800, 594));
@@ -101,6 +110,7 @@ public class OrderGUI extends javax.swing.JFrame {
         jLabel3.setText("Date From");
         jPanel12.add(jLabel3);
 
+        txtFrom.setEnabled(false);
         txtFrom.setPreferredSize(new java.awt.Dimension(180, 25));
         jPanel12.add(txtFrom);
 
@@ -125,6 +135,7 @@ public class OrderGUI extends javax.swing.JFrame {
         jLabel4.setText("Date To");
         jPanel16.add(jLabel4);
 
+        txtTo.setEnabled(false);
         txtTo.setPreferredSize(new java.awt.Dimension(180, 25));
         jPanel16.add(txtTo);
 
@@ -147,6 +158,11 @@ public class OrderGUI extends javax.swing.JFrame {
         txtAdvance.setForeground(new java.awt.Color(255, 255, 255));
         txtAdvance.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/search.png"))); // NOI18N
         txtAdvance.setPreferredSize(new java.awt.Dimension(60, 25));
+        txtAdvance.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtAdvanceActionPerformed(evt);
+            }
+        });
         jPanel15.add(txtAdvance);
 
         jPanel5.add(jPanel15);
@@ -326,12 +342,12 @@ public class OrderGUI extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 805, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 848, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 648, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
@@ -357,11 +373,12 @@ public class OrderGUI extends javax.swing.JFrame {
         dateChooser1.setVisible(true);
 
 //        dateChooser1.showPopup(parent, 500, 300);
-        dateChooser1.showPopup(this, 200,200);
+        dateChooser1.showPopup(this, 250, 150);
     }//GEN-LAST:event_btnDateFromActionPerformed
 
     private void btnReloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReloadActionPerformed
         loadAllOrders();
+        setDetailToTable(new ArrayList(new Order().getOrderDetails()));
     }//GEN-LAST:event_btnReloadActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
@@ -393,7 +410,7 @@ public class OrderGUI extends javax.swing.JFrame {
         dateChooser2.setVisible(true);
 
 //        dateChooser1.showPopup(parent, 500, 300);
-        dateChooser2.showPopup(this, 200, 200);
+        dateChooser2.showPopup(this, 250, 150);
     }//GEN-LAST:event_btnDateToActionPerformed
 
     private void btnAddOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddOrderActionPerformed
@@ -401,7 +418,14 @@ public class OrderGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAddOrderActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
-        // TODO add your handling code here:
+        int i = tableOrder.getSelectedRow();
+        if (i != -1) {
+
+            EditOrderGUI editGUI = new EditOrderGUI(this, orderList.get(i));
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Please choose record you want to update first");
+        }
     }//GEN-LAST:event_btnEditActionPerformed
 
     private void btnDeleteOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteOrderActionPerformed
@@ -410,15 +434,13 @@ public class OrderGUI extends javax.swing.JFrame {
             int choice = JOptionPane.showConfirmDialog(this, "Are you sure want to delete it", "Confirm Dialog", JOptionPane.YES_NO_OPTION);
             if (choice == JOptionPane.YES_OPTION) {
                 int id = Integer.parseInt(tableOrder.getModel().getValueAt(i, 0).toString());
-                System.out.println(id);
-                
-                if(orderBLL.deleteOrderByID(i)){
+
+                if (orderBLL.deleteOrderByID(id)) {
                     JOptionPane.showMessageDialog(this, "Delete order successfully");
                     loadAllOrders();
-                    this.setDetailToTable(new ArrayList(new Order().getOrderDetails()));
-                }
-                else{
-                    JOptionPane.showMessageDialog(this,  "Delete order fail");
+                    setDetailToTable(new ArrayList(new Order().getOrderDetails()));
+                } else {
+                    JOptionPane.showMessageDialog(this, "Delete order fail");
                 }
 
             }
@@ -426,6 +448,31 @@ public class OrderGUI extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Please choose record you want to delete first");
         }
     }//GEN-LAST:event_btnDeleteOrderActionPerformed
+
+    private void txtAdvanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAdvanceActionPerformed
+        try {
+
+            String from = txtFrom.getText();
+            String to = txtTo.getText();
+
+            java.util.Date dt = new java.util.Date();
+            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+
+            Date fromDate = sdf.parse(from);
+            Date toDate = sdf.parse(to);
+
+            if (toDate.before(fromDate)) {
+                JOptionPane.showMessageDialog(this, "Your duration time is not correct!!!");
+            } else {
+                orderList = orderBLL.findOrderByDate(fromDate, toDate);
+                setOrderToTable();
+                setDetailToTable(new ArrayList(new Order().getOrderDetails()));
+            }
+
+        } catch (Exception ex) {
+            ex.getMessage();
+        }
+    }//GEN-LAST:event_txtAdvanceActionPerformed
 
     public void loadAllOrders() {
         orderList = orderBLL.getAllOrders();

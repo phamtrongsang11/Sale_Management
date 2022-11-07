@@ -570,25 +570,30 @@ public class AddOrderGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnHelpUserActionPerformed
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        try {
-            Double price = Double.parseDouble(txtPrice.getText());
-            int qty = Integer.parseInt(txtQty.getText());
+        int i = tableDetail.getSelectedRow();
+        if (i == -1) {
+            try {
+                Double price = Double.parseDouble(txtPrice.getText());
+                int qty = Integer.parseInt(txtQty.getText());
 
-            totalQty += qty;
-            txtTotalqty.setText(totalQty + "");
+                totalQty += qty;
+                txtTotalqty.setText(totalQty + "");
 
-            Double subtotal = price * qty;
-            totalPrice += subtotal;
-            txtTotalPrice.setText(totalPrice + "");
+                Double subtotal = price * qty;
+                totalPrice += subtotal;
+                txtTotalPrice.setText(totalPrice + "");
 
-            OrderDetail od = new OrderDetail(order, product, price, qty, subtotal);
-            odList.add(od);
+                OrderDetail od = new OrderDetail(order, product, price, qty, subtotal);
+                odList.add(od);
 
-            JOptionPane.showMessageDialog(this, "Add detail success");
-            resetDetailForm();
-            setDetailToTable();
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+                JOptionPane.showMessageDialog(this, "Add detail success");
+                resetDetailForm();
+                setDetailToTable();
+            } catch (Exception ex) {
+                System.out.println(ex.getMessage());
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "This product had aldready existed in detail");
         }
     }//GEN-LAST:event_btnAddActionPerformed
 
@@ -637,7 +642,7 @@ public class AddOrderGUI extends javax.swing.JFrame {
                 int qty = Integer.parseInt(txtQty.getText());
                 Double subtotal = price * qty;
 
-                OrderDetail od = new OrderDetail(order, product, price, qty, subtotal);
+                OrderDetail od = new OrderDetail(order, odList.get(i).getProduct(), price, qty, subtotal);
 
                 totalDown(odList.get(i));
                 totalUp(od);
@@ -667,6 +672,7 @@ public class AddOrderGUI extends javax.swing.JFrame {
 
     private void btnConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmActionPerformed
         java.util.Date dt = new java.util.Date();
+//        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentTime = sdf.format(dt);
 
@@ -678,8 +684,7 @@ public class AddOrderGUI extends javax.swing.JFrame {
         order.setTotalPrice(Double.parseDouble(txtTotalPrice.getText()));
         order.setOrderDetails(odList);
 
-        System.out.println(odList.get(0).getOrder().getTotalPrice());
-
+//        System.out.println(odList.get(0).getOrder().getTotalPrice());
         if (orderBLL.saveOrder(order)) {
             JOptionPane.showMessageDialog(this, "Add order successfully");
             this.setVisible(false);
@@ -784,10 +789,10 @@ public class AddOrderGUI extends javax.swing.JFrame {
 
     public void resetOrderForm() {
         txtUser.setText("");
-        txtQty.setText("");
-        txtPrice.setText("");
-        txtSubtotal.setText("");
-
+        txtCity.setText("");
+        txtAddress.setText("");
+        txtTotalqty.setText("");
+        txtTotalPrice.setText("");
     }
 
     /**

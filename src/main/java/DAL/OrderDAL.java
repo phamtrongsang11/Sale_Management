@@ -130,8 +130,10 @@ public class OrderDAL {
         try {
             session = factory.openSession();
             transaction = session.beginTransaction();
-
+            
             Order order = session.get(Order.class, id);
+            
+            System.out.println(order);
             if (order != null) {
                 for (OrderDetail orderDetail : order.getOrderDetails()) {
 
@@ -140,13 +142,15 @@ public class OrderDAL {
                     product.setStock(changeQty);
 
                     product.getOrderDetails().remove(orderDetail);
-                    
+
                     session.update(product);
                 }
 
                 order.getOrderDetails().clear();
 
                 session.delete(order);
+            } else {
+                result = false;
             }
             transaction.commit();
         } catch (Exception ex) {
@@ -223,7 +227,7 @@ public class OrderDAL {
         od1.setOrder(order);
 //        od1.setPrimaryKey(pk);
         od1.setProduct(product1);
-        System.out.println(product1.getProductID());
+//        System.out.println(product1.getProductID());
 //        od1.getPrimaryKey().setProductID(product1.getProductID());
         od1.setPrice(200.0);
         od1.setQty(5);
@@ -232,10 +236,12 @@ public class OrderDAL {
 
 //        order.addOrderDetails(od1);
 //        oDAL.saveOrder(order);
-
-        int id = oDAL.getLastOrderId();
-
-        System.out.println(oDAL.deleteOrderByID(id));
+//        int id = oDAL.getLastOrderId();
+//
+//        System.out.println(oDAL.deleteOrderByID(id));
+        Order ord = oDAL.getOrderById(43);
+        System.out.println(ord);
+        System.out.println(ord.getOrderDetails().size());
 
 //        OrderDetailDAL odDAL = new OrderDetaislDAL();
 //        

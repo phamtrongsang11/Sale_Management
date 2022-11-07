@@ -142,7 +142,7 @@ public class CategoryDAL {
 
     public static void main(String[] args) {
         CategoryDAL cateDAL = new CategoryDAL();
-        Category cate = new Category("Gọng kính kim loại", "...");
+        Category cate = new Category("Gọng kính tròn", "...");
         cateDAL.saveCategory(cate);
 
 //        cateDAL.deleteCategoryById(3);

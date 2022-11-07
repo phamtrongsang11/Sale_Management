@@ -147,9 +147,9 @@ public class ProductDAL {
         ProductDAL catDAL = new ProductDAL();
 
         CategoryDAL cateDAL = new CategoryDAL();
-        Category cate = cateDAL.getCategoryById(6);
+        Category cate = cateDAL.getCategoryById(7);
 
-        Product p = new Product("Kính nhựa dẻo Zac C50", 25, 100000, "...", cate);
+        Product p = new Product("Gong kình tròn nữ EyeCenter K22", 30, 150000, "...", cate);
         pDAL.saveProduct(p);
 //        pDAL.deleteProductById(13);
 

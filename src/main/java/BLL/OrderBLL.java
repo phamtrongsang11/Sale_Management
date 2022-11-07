@@ -10,79 +10,103 @@ import DAL.OrderDetail;
 import DAL.User;
 import DAL.UserDAL;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  *
  * @author phamt
  */
 public class OrderBLL {
+    
     private ArrayList<Order> orderList = new ArrayList<>();
     private OrderDAL orderDAL = new OrderDAL();
-
+    
     public OrderBLL() {
-
+        
     }
-
-    public ArrayList<Order> getAllOrders(){
+    
+    public ArrayList<Order> getAllOrders() {
         orderList = new ArrayList(orderDAL.getAllOrders());
         return orderList;
     }
     
-    public Order getOrderById(int id){
+    public Order getOrderById(int id) {
         Order order = orderDAL.getOrderById(id);
         return order;
     }
-
-    public boolean saveOrder(Order order){
+    
+    public boolean saveOrder(Order order) {
         return orderDAL.saveOrder(order);
     }
-
-   public boolean updateOrder(Order order){
+    
+    public boolean updateOrder(Order order) {
         return orderDAL.updateOrder(order);
     }
-   public boolean deleteOrderByID(int id){
+    
+    public boolean deleteOrderByID(int id) {
         return orderDAL.deleteOrderByID(id);
     }
     
-    public ArrayList<Order> findOrderByUserName(String name){
+    public ArrayList<Order> findOrderByUserName(String name) {
         
         ArrayList<Order> result = new ArrayList<>();
-
+        
         for (Order o : orderList) {
             if (o.getUser().getFirstName().toLowerCase().contains(name.toLowerCase())) {
                 result.add(o);
             }
         }
         return result;
-
+        
     }
     
-     public ArrayList<OrderDetail> findOrderDetailByProductName(Order order, String name){
+    public ArrayList<Order> findOrderByDate(Date from, Date to) {
+        ArrayList<Order> result = new ArrayList<>();
+        try {
+            
+            for (Order o : orderList) {
+                
+                java.util.Date dt = new java.util.Date();
+                java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+                
+                Date date = sdf.parse(o.getDate());
+                
+                if (date.after(from) && date.before(to)) {
+                    result.add(o);
+                }
+            }
+        } catch (Exception ex) {
+            ex.getMessage();
+        }
+        return result;
+        
+    }
+    
+    public ArrayList<OrderDetail> findOrderDetailByProductName(Order order, String name) {
         
         ArrayList<OrderDetail> result = new ArrayList<>();
-
+        
         for (OrderDetail od : order.getOrderDetails()) {
             if (od.getProduct().getName().toLowerCase().contains(name.toLowerCase())) {
                 result.add(od);
             }
         }
         return result;
-
+        
     }
+    
+    public ArrayList<Order> ReadUserByNumPage(ArrayList<Order> orderList, int page, int numRecord) {
 
-    public ArrayList<Order> ReadUserByNumPage(ArrayList<Order> orderList,int page, int numRecord){
-       
         //onlList = this.readAllOnlineCourse();
         int startRecord = (page - 1) * numRecord;
         int endRecord = page * numRecord;
-
+        
         return new ArrayList<Order>(orderList.subList(startRecord, Math.min(endRecord, orderList.size())));
-
+        
     }
     
-//    public static void main(String[] args) {
-//        OrderBLL oBLL = new OrderBLL();
-//        oBLL.deleteOrderByID(41);
-//    }
-    
+    public static void main(String[] args) {
+        OrderBLL oBLL = new OrderBLL();
+        oBLL.deleteOrderByID(41);
+    }
 }

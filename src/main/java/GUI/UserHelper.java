@@ -21,20 +21,30 @@ public class UserHelper extends javax.swing.JFrame {
      * Creates new form UserHelper
      */
     private AddOrderGUI addGUI;
+    private EditOrderGUI editGUI;
     DefaultTableModel model;
     UserBLL userBLL = new UserBLL();
     User user = new User();
-
+    
     ArrayList<User> userList = new ArrayList<>();
-
+    
     public UserHelper() {
         initComponents();
     }
-
+    
     public UserHelper(AddOrderGUI addGUI) {
         initComponents();
         this.addGUI = addGUI;
-        this.loadAllProducts();
+        this.loadAllCustomers();
+        this.pack();
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
+    }
+    
+    public UserHelper(EditOrderGUI editGUI) {
+        initComponents();
+        this.editGUI = editGUI;
+        this.loadAllCustomers();
         this.pack();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
@@ -126,20 +136,28 @@ public class UserHelper extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void tableUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableUserMouseClicked
-         int i = tableUser.getSelectedRow();
+        int i = tableUser.getSelectedRow();
+        
         if (i != -1) {
             user = userList.get(i);
             
-            addGUI.setUser(user);
+            if (addGUI != null) {
+                addGUI.setUser(user);
+            } else if (editGUI != null) {
+                editGUI.setUser(user);
+            }
+            else{
+                
+            }
             
             this.setVisible(false);
         }
     }//GEN-LAST:event_tableUserMouseClicked
-
+    
     public void setValueToTable(ArrayList<User> userList) {
         model = (DefaultTableModel) tableUser.getModel();
         model.setRowCount(0);
-
+        
         for (User user : userList) {
             Vector row = new Vector();
             row.add(user.getUserID());
@@ -147,13 +165,13 @@ public class UserHelper extends javax.swing.JFrame {
             row.add(user.getLastName());
             row.add(user.getEmail());
             row.add(user.getPhone());
-
+            
             model.addRow(row);
         }
         tableUser.setModel(model);
     }
-
-    public void loadAllProducts() {
+    
+    public void loadAllCustomers() {
         userList = userBLL.getAllCustomer();
         if (userList != null) {
             setValueToTable(userList);
